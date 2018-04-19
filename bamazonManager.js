@@ -127,13 +127,14 @@ function checkInventory() {
     managerAction();
 }
 
+
 function addInventory() {
     inquirer.prompt([
       
         {
             type: "input",
             name: "inventorySelect",
-            message: "Which item would you like to add inventory to?: ",
+            message: "Enter the item id# of the item you would like to add inventory to: ",
         },
         {
             type: "input",
@@ -142,25 +143,45 @@ function addInventory() {
         }
           ]).then(function(input) {
             var selectedItem = parseInt(input.inventorySelect);
-            var actualIndex = selectedItem - 1;
-            var inventoryAdd = parseInt(input.addInventory);
-            var newStockQuantity = inventoryAdd + parseInt(productsArray[actualIndex].Stock);
-            var query = connection.query (
-                "UPDATE products SET ? WHERE ?",
-              [
-                {
-                  stock_quantity: newStockQuantity
-                },
-                {
-                  item_id: selectedItem
+            var itemExist = false;
+            for (i=0; i < productsArray.length; i++) {
+                if (productsArray[i].ID != selectedItem) {
+                    continue;
                 }
-              ],
-              function(err, res) {
-                updateData();
-            });
-              
-        });
+
+                else if (productsArray[i].ID === selectedItem) {
+                    itemExist = true;
+                }
+            }
+            if (itemExist === false) {
+                console.log("Invalid item. Please select an existing product id number.")
+                addInventory();
+            }
+
+            else if (itemExist === true) {
+                var actualIndex = selectedItem - 1;
+                var inventoryAdd = parseInt(input.addInventory);
+                var newStockQuantity = inventoryAdd + parseInt(productsArray[actualIndex].Stock);
+                var query = connection.query (
+                    "UPDATE products SET ? WHERE ?",
+                  [
+                    {
+                      stock_quantity: newStockQuantity
+                    },
+                    {
+                      item_id: selectedItem
+                    }
+                  ],
+                  function(err, res) {
+                    updateData();
+                });
+
+
+            }
+                  
+    });
 }
+
 
 function newProductPrompt() {
     console.log("Inserting a new product...\n");
