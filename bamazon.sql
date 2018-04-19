@@ -16,7 +16,7 @@ CREATE TABLE products (
 INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES
 ("Washi Masking Tapes", "Office Supplies", 13.50, 300), ("Komono Sunglasses", "Fashion", 68.91, 100), 
 ("Novelty Cartoon Avocado Pin", "Accessories", 7.99, 10), ("Wood Pet Home - Room With a View", "Pet Supplies", 67.23, 8), 
-("Vintage Fan", "Appliances", 179.99, 2), ("Laboratory Beaker Wine Glass", "Home", 19.99, 6),
+("Vintage Fan", "Appliances", 179.99, 2), ("Laboratory Beaker Wine Glass", "Home", 19.99, 4),
 ("Hard Case iPhone 7", "Cell Phone Accessories", 13.98, 8), ("Fujifilm Instax Mini 8+", "Camera & Photo", 59.49, 20),
 ("Rainbow Color Wheel Umbrella", "Home", 26.30, 10), ("Pokemon Large Plush Snorlax", "Toys & Games", 28.36, 50);
 

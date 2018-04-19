@@ -13,8 +13,9 @@ var connection = mysql.createConnection({
 
 function updateDisplay() {
     productsArray = [];
-    connection.query("SELECT * FROM products", function(err, result, fields) {
+    connection.query("SELECT * FROM bamazon.products", function(err, result, fields) {
         if (err) throw err;
+        console.log("------------------------------------------------------------------------------------------------------------------------")
         for (i=0; i < result.length; i++) {
             var item_id = result[i].item_id;
             var product_name = result[i].product_name;
@@ -23,10 +24,10 @@ function updateDisplay() {
             var stock_quantity = result[i].stock_quantity;
             var item_info = {"ID": parseInt(item_id), "Product": product_name, "Department": department_name, "Price": parseFloat(price), "Stock": parseInt(stock_quantity)};
             productsArray.push(item_info);
-            console.log("------------------------------------------------------------------------------------------------------------------------")
-            console.log(item_info);
+            console.log("Item ID#: " + item_info.ID + " | Product: " + item_info.Product + " | Department: " + item_info.Department + " | Price: " + item_info.Price + " | Stock: " + item_info.Stock)
             
         }
+        console.log("------------------------------------------------------------------------------------------------------------------------")
         itemSelect();
     });
 }
@@ -42,6 +43,7 @@ function connectAndDisplay() {
         console.log('connected as id ' + connection.threadId);
         connection.query("SELECT * FROM bamazon.products", function(err, result, fields) {
             if (err) throw err;
+            console.log("------------------------------------------------------------------------------------------------------------------------")
             for (i=0; i < result.length; i++) {
                 var item_id = result[i].item_id;
                 var product_name = result[i].product_name;
@@ -50,10 +52,11 @@ function connectAndDisplay() {
                 var stock_quantity = result[i].stock_quantity;
                 var item_info = {"ID": parseInt(item_id), "Product": product_name, "Department": department_name, "Price": parseFloat(price), "Stock": parseInt(stock_quantity)};
                 productsArray.push(item_info);
-                console.log("------------------------------------------------------------------------------------------------------------------------")
-                console.log(item_info);
+                // console.log(item_info);
+                console.log("Item ID#: " + item_info.ID + " | Product: " + item_info.Product + " | Department: " + item_info.Department + " | Price: " + item_info.Price + " | Stock: " + item_info.Stock)
                 
             }
+            console.log("------------------------------------------------------------------------------------------------------------------------")
             itemSelect();
             
         });
@@ -75,12 +78,12 @@ function itemSelect() {
             for (i=0; i < productsArray.length; i++) {
 
                 if (parseInt(input.itemSelect) === productsArray[i].ID) {
-                    var item = productsArray[i];
+                    var item_info = productsArray[i];
                     console.log("*******************************************************************************************************************")
-                    console.log("----------------------------------------------------YOUR CART------------------------------------------------------")
-                    console.log(item)
+                    console.log("---------------------------------------------------YOU SELECTED----------------------------------------------------")
+                    console.log("Item ID#: " + item_info.ID + " | Product: " + item_info.Product + " | Department: " + item_info.Department + " | Price: " + item_info.Price + " | Stock: " + item_info.Stock)
                     console.log("*******************************************************************************************************************")
-                    itemPurchase(item);
+                    itemPurchase(item_info);
                 }
               
             }
@@ -109,7 +112,7 @@ function itemPurchase(selectedItem) {
                 }
 
                 else {
-                    console.log("Insufficient quantity");
+                    console.log("Insufficient quantity: There is not enough of the item you selected in stock.");
                     itemPurchase(item);
                 }
               
@@ -134,7 +137,7 @@ function updateStock (selectedItem, quantity) {
         }
       ],
       function(err, res) {
-        console.log(res.affectedRows)
+        console.log("Item ID: " + res.affectedRows + " stock has been updated")
         console.log("Order completed");
         console.log("Your total is: " + userTotal)
         buyMoreThings();
